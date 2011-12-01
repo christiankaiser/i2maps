@@ -151,10 +151,21 @@ function load_i2maps(){
                 console.error("Invalid base layer name: " + layer_name);
             }
         };
-        for(bl in map_options.baseLayers){
-            map.addBaseLayer(map_options.baseLayers[bl])
+        
+	for(bl in map_options.baseLayers)
+        {
+            // This could be an OpenLayers layer or a String, hense the name.
+            layerOrString = map_options.baseLayers[bl];
+            
+            // If this is an OpenLayers layer then its CLASS_NAME 
+            // should be defined.
+            if(layerOrString.CLASS_NAME != undefined)
+                map.addLayer(layerOrString);
+            else
+                map.addBaseLayer(layerOrString);
         }
-        map.events.register("addlayer", map, function(e){
+	
+	map.events.register("addlayer", map, function(e){
             var layer = e.layer;
             if(layer.isVector && !layer.name.startsWith("OpenLayers.Control.SelectFeature")){
                 if(!this.selectControl == undefined) this.removeControl(this.selectControl);
