@@ -136,36 +136,31 @@ function load_i2maps(){
         }
         map_options.div.innerHTML = '';
         var map = new OpenLayers.Map(map_options.div, map_options);
-        map.addBaseLayer = function(layer_name){
-            if(layer_name.contains("Google") && window['G_PHYSICAL_MAP'] == undefined){
-                console.error("You must set GOOGLE_MAPS_API_KEY to your API key to use Google Maps layers!");
-                return
+        map.addBaseLayer = function(layer){
+            if(layer.CLASS_NAME == undefined){
+                if(layer.contains("Google") && window['G_PHYSICAL_MAP'] == undefined){
+                    console.error("You must set GOOGLE_MAPS_API_KEY to your API key to use Google Maps layers!");
+                    return
+                }
+                var base_layer_creator;
+                if((base_layer_creator = i2maps.baseLayerDefinitions[layer])){
+                    layer = base_layer_creator.call();
+                }
+                else{
+                    console.error("Invalid base layer name: " + layer);
+                    return;
+                }
             }
-            var base_layer_creator;
-            if((base_layer_creator = i2maps.baseLayerDefinitions[layer_name])){
-                var layer = base_layer_creator.call();
-                this.addLayer(layer);
-                return layer;
-            }
-            else{
-                console.error("Invalid base layer name: " + layer_name);
-            }
+            this.addLayer(layer);
+            return layer;
         };
         
-	for(bl in map_options.baseLayers)
+        for(bl in map_options.baseLayers)
         {
-            // This could be an OpenLayers layer or a String, hense the name.
-            layerOrString = map_options.baseLayers[bl];
-            
-            // If this is an OpenLayers layer then its CLASS_NAME 
-            // should be defined.
-            if(layerOrString.CLASS_NAME != undefined)
-                map.addLayer(layerOrString);
-            else
-                map.addBaseLayer(layerOrString);
+            map.addBaseLayer(map_options.baseLayers[bl]);
         }
-	
-	map.events.register("addlayer", map, function(e){
+        
+        map.events.register("addlayer", map, function(e){
             var layer = e.layer;
             if(layer.isVector && !layer.name.startsWith("OpenLayers.Control.SelectFeature")){
                 if(!this.selectControl == undefined) this.removeControl(this.selectControl);
