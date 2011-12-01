@@ -60,7 +60,7 @@ i2maps.Timeline = (function() {
         this.ONE_YEAR = 365 * _this.ONE_DAY;
         
         // Events
-        this.onChangeTime = function(time){i2maps.events.trigger("timechange", time)};
+        this.onChangeTime = function(time){i2maps.events.trigger("timechange", time, dataIndex)};
         this.onPostDraw = function(){};
         
         // initialize
@@ -145,7 +145,7 @@ i2maps.Timeline = (function() {
                         current_time = item.datapoint[0];
                         highlight(item);
                         time_target.html(new Date(current_time).toGMTString());
-                        _this.onChangeTime(i2maps.timestampToDateString(current_time));
+                        _this.onChangeTime(i2maps.timestampToDateString(current_time), item.dataIndex);
                     }
                 }
             });
@@ -329,7 +329,7 @@ i2maps.Timeline = (function() {
         {
             current_time = dateStringToTimestamp(time);
             draw();
-            _this.onChangeTime(i2maps.timestampToDateString(current_time));
+            _this.onChangeTime(i2maps.timestampToDateString(current_time), -1);
         }
         
         function getCurrentValue(series)
