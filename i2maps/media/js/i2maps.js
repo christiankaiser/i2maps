@@ -169,7 +169,7 @@ function load_i2maps(){
                 );
                 this.selectControl.handlers.feature.stopDown = false; // hack for dragging vector layers
                 this.addControl(this.selectControl);
-                this.selectControl.activate();   
+                this.selectControl.activate();
             }
         });
         overlay_layer = new i2maps.VectorLayer("overlay");
@@ -198,12 +198,25 @@ function load_i2maps(){
         layer.events.addEventType("featureunselected");
         layer.events.on({
         	"featureselected": function(e) {
+                layer.selected_id = e.feature.attributes.id;
         		if(layer.select_function) layer.select_function(e.feature.attributes.id, e.feature);
         	},
         	"featureunselected": function(e) {
+                layer.selected_id = null;
                 if(layer.unselect_function) layer.unselect_function(e.feature.attributes.id, e.feature);
         	},
         });
+        
+        layer.select = function(id){
+            layer.unselect(layer.selected_id);
+            layer.map.selectControl.select(layer.getFeatureByFid(id));
+        }
+        
+        layer.unselect = function(id){
+            id = id || layer.selected_id;
+            if(id) layer.map.selectControl.unselect(layer.getFeatureByFid(id));
+        }
+        
         layer.setGeometries = function(geometries, key){
             var geojson = new OpenLayers.Format.GeoJSON();
             var parse_geom = function(geom){
@@ -226,6 +239,7 @@ function load_i2maps(){
                     if(key) f.geometry = geometries[id][key] = parse_geom(geometries[id][key]);
                     else f.geometry = geometries[id] = parse_geom(geometries[id]);
                     f.attributes.id = id;
+                    f.fid = id;
                     this.addFeatures([f]);
                 }
             }
