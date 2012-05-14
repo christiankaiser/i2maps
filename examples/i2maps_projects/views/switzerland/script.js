@@ -17,6 +17,11 @@ pico.main = function() {
     // Create a colormap for the population density by providing the class limits
     // The second argument is the default color in case of no data
     pop_colormap = i2maps.colorbrewer.oranges5([0.2,1,2,5,10,52], [255,255,255]);
+    // It is also possible to create a color theme based on only the minimum and maximum value.
+    // The class limits are in this case equal in size after transformation with the 3rd argument.
+    // If none is provided, there is no transformation performed. 4th argument is back-transform.
+    // You can also provide your own function here.
+    // pop_colormap = i2maps.colorbrewer.oranges5([0.1,52], [255,255,255], Math.log, Math.exp);
     
     // Define the style function; the fill color comes from the colormap
 	cantons_layer.style_function = function(id, selected) {

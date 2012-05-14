@@ -322,8 +322,8 @@ i2maps.colorbrewer = (function (){
                     var minval = scale_fn(limits[0]);
                     var maxval = scale_fn(limits[1]);
                     var step = (maxval - minval) / ncolors;
-                    for (var i = minval; i < (maxval-step); i += step) {
-                        stops.push([i, (i+step)]);
+                    for (var i = 0; i <= ncolors; i++) {
+                        stops.push([minval + i*step, minval + (i+1)*step]);
                     }
                 } else if (limits.length == (ncolors + 1)) {
                     for (var i=0; i < (limits.length - 1); i++) {
