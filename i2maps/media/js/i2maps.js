@@ -14,6 +14,7 @@ function load_i2maps(){
     "timeline.js",
 //    "circle.js",
     "colormap.js",
+    "colorbrewer.js",
     "openlayers-extensions/surface.js",
 //    "openlayers-extensions/canvas.js",
     "openlayers-extensions/cloudmade.js",

@@ -1,4 +1,4 @@
-import sys
+import os, sys
 import i2maps
 import pico
 
@@ -24,10 +24,12 @@ def run():
         views_directory = './'
         i2maps.projects_directory = './'
     media_directory = i2maps.path + 'media/'
+    docs_directory = os.path.dirname(__file__) + os.sep + 'docs' + os.sep
     
     urls = [
         ('^/(.*)$', views_directory),
         ('^/media/(.*)$', media_directory),
+        ('^/docs/(.*)$', docs_directory),
         ('^/$', media_directory + 'index.html'),
     ]
     

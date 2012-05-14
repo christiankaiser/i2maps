@@ -5,3 +5,5 @@ build
 # Python's precompiled files
 *.pyc
 *.pyo
+# OSX specific hidden files
+.DS_Store
