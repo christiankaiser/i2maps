@@ -99,12 +99,9 @@ i2maps.Timeline = (function() {
             function apply(obj, options)
             {
                 for (opt in options) {
-                    if (options[opt].toString() == "[object Object]")
-                    {
+                    if (options[opt] != null && options[opt].toString() == "[object Object]") {
                         apply(obj[opt], options[opt]);
-                    }
-                    else
-                    {
+                    } else {
                         obj[opt] = options[opt];
                     }
                 }
@@ -144,8 +141,13 @@ i2maps.Timeline = (function() {
                     {
                         current_time = item.datapoint[0];
                         highlight(item);
-                        time_target.html(new Date(current_time).toGMTString());
-                        _this.onChangeTime(i2maps.timestampToDateString(current_time));
+                        if (plot_options.xaxis.mode == null) {
+                            time_target.html(current_time);
+                            _this.onChangeTime(current_time);
+                        } else {
+                            time_target.html(new Date(current_time).toGMTString());
+                            _this.onChangeTime(i2maps.timestampToDateString(current_time));
+                        }
                     }
                 }
             });
@@ -168,11 +170,15 @@ i2maps.Timeline = (function() {
             
                 //plot_options.yaxis.min = min_value;
                 // plot_options.yaxis.max = max_value;
-                if(end_time - start_time < _this.ONE_DAY) plot_options.xaxis.timeformat = "%H:%M:%S";
-                if(end_time - start_time < 10 * _this.ONE_MINUTE) plot_options.xaxis.timeformat = "%H:%M:%S:%s";
-                if(end_time - start_time > _this.ONE_DAY) plot_options.xaxis.timeformat = "%d %b %H:%M";
-                if(end_time - start_time > _this.ONE_WEEK) plot_options.xaxis.timeformat = "%d %b";
-                if(end_time - start_time > _this.ONE_YEAR) plot_options.xaxis.timeformat = "%d %b %y";
+                if(plot_options.xaxis.mode == null) {
+                    plot_options.xaxis.timeformat = null;
+                } else {
+                    if(end_time - start_time < _this.ONE_DAY) plot_options.xaxis.timeformat = "%H:%M:%S";
+                    if(end_time - start_time < 10 * _this.ONE_MINUTE) plot_options.xaxis.timeformat = "%H:%M:%S:%s";
+                    if(end_time - start_time > _this.ONE_DAY) plot_options.xaxis.timeformat = "%d %b %H:%M";
+                    if(end_time - start_time > _this.ONE_WEEK) plot_options.xaxis.timeformat = "%d %b";
+                    if(end_time - start_time > _this.ONE_YEAR) plot_options.xaxis.timeformat = "%d %b %y";
+                }
             
                 plot = $.plot(target_, data_series, plot_options);
                 if(start_time < 100)
@@ -194,13 +200,18 @@ i2maps.Timeline = (function() {
                 }
             }
             // time_target.html(new Date(current_time).toLocaleDateString() + " " + new Date(current_time).toLocaleTimeString());
-            time_target.html(new Date(current_time).toGMTString());
+            if(plot_options.xaxis.mode == null) {
+                time_target.html(current_time);
+            } else {
+                time_target.html(new Date(current_time).toGMTString());
+            }
             
             _this.onPostDraw();
         }
         
-        function parseTimespan(timespan)
+        function parseTimespan(timespan) 
         {
+            if (typeof(timespan) != 'string') return timespan;
             var x = timespan.split(' ')[0];
             var a = timespan.split(' ')[1];
             if (a.substr(-1) == "s") a = a.slice(0,-1);
@@ -300,7 +311,10 @@ i2maps.Timeline = (function() {
             data_ = [];
             for(var d in data_array)
             {
-                var t = dateStringToTimestamp(data_array[d].time);
+                var t = data_array[d].time;
+                if(plot_options.xaxis.mode != null) {
+                    t = dateStringToTimestamp(data_array[d].time);
+                }
                 data_.push([t, parseFloat(data_array[d].value), data_array[d].time]);
             }
             data_.sort(function(a,b){return a[0] - b[0]});
@@ -323,13 +337,19 @@ i2maps.Timeline = (function() {
         
         function getCurrentTime()
         {
+            if (plot_options.xaxis.mode == null) return current_time;
             return i2maps.timestampToDateString(current_time);
         }
         function setCurrentTime(time)
         {
-            current_time = dateStringToTimestamp(time);
+            current_time = time;
+            if(plot_options.xaxis.mode != null) current_time = dateStringToTimestamp(time);
             draw();
-            _this.onChangeTime(i2maps.timestampToDateString(current_time));
+            if(plot_options.xaxis.mode == null) {
+                _this.onChangeTime(current_time);
+            } else {
+                _this.onChangeTime(i2maps.timestampToDateString(current_time));
+            }
         }
         
         function getCurrentValue(series)
