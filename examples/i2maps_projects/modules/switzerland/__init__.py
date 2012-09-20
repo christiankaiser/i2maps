@@ -11,7 +11,7 @@ import i2maps, i2maps.db
 import json     # For reading GeoJson file
 import os
 
-dbfile = '/data/switzerland/switzerland.db'
+dbfile = 'data/switzerland/switzerland.db'
 db = i2maps.db.Sqlite(i2maps.projects_directory + dbfile)
 
 def cantons():
@@ -26,7 +26,7 @@ def cantons_from_geojson():
     We need to return a dictionary where the keys are the abbreviation of the
     cantons, and the values the geometries as GeoJSON dictionary
     """
-    fp = open(i2maps.projects_directory + '/data/switzerland/cantons.geojson')
+    fp = open(i2maps.projects_directory + 'data/switzerland/cantons.geojson')
     fc = json.load(fp)
     cantons = {}
     for feat in fc['features']:

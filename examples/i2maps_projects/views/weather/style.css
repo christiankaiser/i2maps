@@ -1,0 +1,50 @@
+body {
+    font-family: sans-serif;
+}
+
+h1 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+div#map {
+    width: 730px; height: 500px; position: absolute; left: 200px; top: 10px;
+}
+
+div#info_column {
+    width: 150px; 
+    height: 500px;
+    background-color: #eee;
+    margin: 10px;
+    padding: 1px 10px 0 10px;
+    font-size: 12px;
+}
+
+div#info td {
+    font-size: 11px;
+    vertical-align: top;
+    border-bottom: 1px solid #bbb;
+}
+
+div#legend p {
+    margin-left: 10px;
+}
+
+div#timeline {
+    margin: 10px;
+    width: 920px;
+    height: 200px;
+}
+
+div#loading {
+    position: absolute;
+    top: 100px;
+    left: 150px;
+    right: 150px;
+    height: 150px;
+    background-color: #ddd;
+    opacity: 0.8;
+    border: 1px solid #666;
+    text-align: center;
+    padding: 40px;
+}
