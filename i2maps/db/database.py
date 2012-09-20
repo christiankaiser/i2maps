@@ -10,14 +10,14 @@ class Database(object):
             if len(row) == 2:
                  result[row[0]] = row[1]
             else:
-                # Use the first column name as the outter dictionary key.
+                # Use the first column name as the outer dictionary key.
                 key = rows.description[0][0]
                 # Create a new dictionary from the entire row.
                 d = dict(row)
-                # Pop off the outter most key. 
+                # Pop off the outer most key. 
                 # We don't want this info to be replicated in our dictionary.
                 d.pop(key)
-                # Add the new dictionary to the outter dictionary using the key.
+                # Add the new dictionary to the outer dictionary using the key.
                 result[row[key]] = d
 	return result
         

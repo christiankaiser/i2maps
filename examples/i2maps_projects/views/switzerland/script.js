@@ -24,28 +24,29 @@ pico.main = function() {
     // pop_colormap = i2maps.colorbrewer.oranges5([0.1,52], [255,255,255], Math.log, Math.exp);
     
     // Define the style function; the fill color comes from the colormap
-	cantons_layer.style_function = function(id, selected) {
-	    data = cantons_popdens[id];
-	    if (data) {
-	        var v = pop_colormap(data.pop_dens);
-	        return {
-	            'fillColor': v.html(),
-	            'stroke': 0,
-	            'fillOpacity': 0.7,
-	        }
-	    } else {
-	        return {
-	            'fillColor': "#ffffff",
-	            'stroke': 0,
-	            'fillOpacity': 0,
-	        }
-	   }
-	}
+    cantons_layer.style_function = function(id, selected) {
+        data = cantons_popdens[id];
+        if (data) {
+            var v = pop_colormap(data.pop_dens);
+            return {
+                'fillColor': v.html(),
+                'stroke': 0,
+                'fillOpacity': 0.7,
+            };
+        } else {
+            return {
+                'fillColor': "#ffffff",
+                'stroke': 0,
+                'fillOpacity': 0,
+            };
+       }
+    }
     map.addLayer(cantons_layer);
     
     // Retrieve the geometries from the Python function cantons
     switzerland.cantons(function(data) {
         cantons_layer.setGeometries(data);
+        $('#loading').css('visibility', 'hidden');
     });
     
     // Retrieve the population density from Python

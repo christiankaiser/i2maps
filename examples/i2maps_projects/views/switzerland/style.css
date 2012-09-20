@@ -25,3 +25,16 @@ div#legend > h3 {
     font-size: 14px;
     font-weight: bold;
 }
+
+div#loading {
+    position: absolute;
+    top: 100px;
+    left: 150px;
+    right: 150px;
+    height: 150px;
+    background-color: #ddd;
+    opacity: 0.8;
+    border: 1px solid #666;
+    text-align: center;
+    padding: 40px;
+}

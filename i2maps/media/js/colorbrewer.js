@@ -293,7 +293,6 @@ i2maps.colorbrewer = (function (){
         // colormap, e.g. cm = i2maps.colorbrewer.blues9([10, 100], [255, 255, 255], true, Math.log, Math.exp)
         var f = function(limits, default_color, scale_fn, inv_scale_fn) {
             limits = limits.sort(function(a, b){ return (a - b); });
-            console.log(limits);
             if (scale_fn == undefined) scale_fn = function(val){ return val; };
             if (inv_scale_fn == undefined) inv_scale_fn = function(val){ return val; };
             // Limits can contain the following possibilities:
